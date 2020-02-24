@@ -73,8 +73,9 @@ const NavigationStacks = createMaterialBottomTabNavigator(
   {
     //initialRouteName: "Liquors",
     order: ["Liquors", "Deals", "ShoppingCart", "Account"],
-    activeColor: "#f2f2f2",
-    barStyle: { backgroundColor: "#00a680" }
+    activeColor: "#f0615a",
+    inactiveColor: "#190976",
+    barStyle: { backgroundColor: "#FAFAFA" }
   }
 );
 
