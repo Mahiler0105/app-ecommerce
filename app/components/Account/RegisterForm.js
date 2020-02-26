@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, TouchableOpacity, Alert } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 import * as firebase from "firebase";
 
-export default function RegisterForm() {
+import Loading from "../../components/Loading";
+
+export default function RegisterForm(props) {
+  const { navigation } = props;
+  // console.log(navigation);
+
   const [hidePassword, setHidePassword] = useState(true);
   const [hideRePassword, setHideRePassword] = useState(true);
 
@@ -19,42 +24,61 @@ export default function RegisterForm() {
   const [errorRePassword, setErrorRePassword] = useState("");
   const inputRePassword = React.createRef();
 
-  const handleRegister = async () => {
-    try {
-      const res = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
-      // .signInWithEmailAndPassword(email, password);
-    } catch (error) {
-      if (error.code === "auth/network-request-failed") {
-        Alert.alert(
-          "Conexión no encontrada, vuelva a intentarlo o intentelo más tarde."
-        );
-      } else if (error.code === "auth/invalid-email") {
-        setErrorEmail("Correo electronico invalido");
-        inputEmail.current.shake();
-      } else if (error.code === "auth/email-already-in-use") {
-        setErrorEmail("El correo ya esta en uso");
-        await inputEmail.current.shake();
-      } else if (error.code === "auth/weak-password") {
-        setErrorEmail("");
-        setErrorPassword("Debe tener más de 6 caracteres");
-        await inputPassword.current.shake();
-        if (password !== rePassword) {
-          setErrorRePassword("No coincide con la contraseña");
-          await inputRePassword.current.shake();
-        } else {
-          setErrorRePassword("");
-        }
-      }
-      console.log(error.code, "---", error);
+  const [isVisibleLoading, setIsVisibleLoading] = useState(false);
+
+  useEffect(() => {
+    if (errorEmail !== "") {
+      inputEmail.current.shake();
+    } else if (errorPassword !== "") {
+      inputPassword.current.shake();
+    } else if (errorRePassword !== "") {
+      inputRePassword.current.shake();
     }
+  }, [errorEmail, errorPassword]);
+
+  const setStateError = () => {
+    setErrorEmail("");
+    setErrorPassword("");
+    setErrorRePassword("");
   };
 
-  //   console.log(email);
-  console.log(password);
-  console.log(rePassword);
-
+  const handleRegister = async () => {
+    setIsVisibleLoading(true);
+    setStateError();
+    if (password !== rePassword) {
+      setErrorRePassword("No coinciden las contraseñas");
+      inputRePassword.current.shake();
+    } else {
+      await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          console.log("entre al hackeo");
+          navigation.navigate("MyAccount");
+        })
+        .catch((error) => {
+          switch (error.code) {
+            case "auth/network-request-failed":
+              Alert.alert(
+                "Conexión no encontrada, vuelva a intentarlo o intentelo más tarde."
+              );
+              break;
+            case "auth/invalid-email":
+              setErrorEmail("Correo electronico invalido");
+              break;
+            case "auth/email-already-in-use":
+              setErrorEmail("El correo ya existe");
+              break;
+            case "auth/weak-password":
+              setErrorPassword("Debe tener más de 6 caracteres");
+              break;
+            default:
+              break;
+          }
+        });
+    }
+    setIsVisibleLoading(false);
+  };
   return (
     <View style={styles.formContainer}>
       <Input
@@ -142,6 +166,7 @@ export default function RegisterForm() {
         buttonStyle={styles.btnRegister}
         onPress={handleRegister}
       />
+      <Loading text="Creando cuenta" isVisible={isVisibleLoading} />
     </View>
   );
 }

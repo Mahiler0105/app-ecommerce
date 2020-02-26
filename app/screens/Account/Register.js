@@ -36,7 +36,7 @@ export default function Register(props) {
           ></Ionicons>
         </TouchableOpacity>
         <View style={styles.viewForm}>
-          <RegisterForm />
+          <RegisterForm navigation={navigation} />
         </View>
       </KeyboardAwareScrollView>
     </ScrollView>
