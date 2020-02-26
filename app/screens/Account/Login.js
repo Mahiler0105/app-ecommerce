@@ -11,6 +11,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { withNavigation } from "react-navigation";
 import { Divider } from "react-native-elements";
 
+import LoginForm from "../../components/Account/LoginForm";
+import LoginFacebook from "../../components/Account/LoginFacebook";
 const Login = (props) => {
   const { navigation } = props;
 
@@ -23,12 +25,12 @@ const Login = (props) => {
           style={styles.logo}
         />
         <View style={styles.viewContainer}>
-          <Text>Form Login</Text>
+          <LoginForm navigation={navigation} />
           <CreateAccount navigation={navigation} />
         </View>
         <Divider style={styles.divider} />
         <View style={styles.viewContainer}>
-          <Text>lOGIN facebook</Text>
+          <LoginFacebook />
         </View>
       </KeyboardAwareScrollView>
     </ScrollView>
@@ -62,12 +64,15 @@ const styles = StyleSheet.create({
     marginTop: 30
   },
   viewContainer: {
-    marginRight: 40,
-    marginLeft: 40
+    marginRight: 25,
+    marginLeft: 25
   },
   divider: {
     backgroundColor: "#FF5733",
-    margin: 50,
+    marginLeft: 30,
+    marginRight: 30,
+    marginTop: 15,
+    marginBottom: 10,
     height: 1
   },
   btnRegister: {
