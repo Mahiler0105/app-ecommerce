@@ -11,7 +11,7 @@ const ShoppingCartScreenStack = createStackNavigator({
       title: "Shopping Cart",
       headerTitleAlign: "center",
       headerTransparent: false,
-      headerTitle: (
+      headerTitle: () => (
         <Image
           source={require("../../assets/header.png")}
           style={{ width: 155, height: 35 }}

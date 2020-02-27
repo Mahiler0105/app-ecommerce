@@ -7,9 +7,9 @@ import Login from "./Login";
 
 import * as firebase from "firebase";
 
-export default MyAccount = () => {
+export default MyAccount = (props) => {
   const [login, setLogin] = useState(null);
-
+  const { navigation } = props;
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       !user ? setLogin(false) : setLogin(true);
@@ -20,5 +20,5 @@ export default MyAccount = () => {
     return <Loading isVisible={true} text="cargando" />;
   }
 
-  return login ? <UserLogged /> : <Login />;
+  return login ? <UserLogged navigation={navigation} /> : <Login />;
 };

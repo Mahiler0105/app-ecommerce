@@ -63,6 +63,7 @@ export default function LoginForm(props) {
       });
     setVisibleLoading(false);
   };
+
   return (
     <View style={styles.formContainer}>
       <Input

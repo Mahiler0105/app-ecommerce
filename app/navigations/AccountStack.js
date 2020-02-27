@@ -7,6 +7,7 @@ import MyAccountScreen from "../screens/Account/MyAccount";
 import LoginScreen from "../screens/Account/Login";
 import RegisterScreen from "../screens/Account/Register";
 import UserLoggedScreen from "../screens/Account/UserLogged";
+import AccountConfigScreen from "../screens/Account/AccountConfig";
 
 const width = 155;
 const height = 35;
@@ -38,6 +39,14 @@ const AccountScreenStack = createStackNavigator({
     screen: UserLoggedScreen,
     navigationOptions: () => ({
       title: "My account",
+      headerShown: true,
+      headerTransparent: false
+    })
+  },
+  AccountConfig: {
+    screen: AccountConfigScreen,
+    navigationOptions: () => ({
+      title: "Configuración",
       headerShown: true
     })
   }
