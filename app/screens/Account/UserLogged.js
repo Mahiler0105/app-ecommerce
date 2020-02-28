@@ -48,7 +48,7 @@ export default function UserLogged(props) {
           />
         }
         centerComponent={{
-          text: userInfo2 && userInfo2.name + " " + userInfo2.lastName,
+          text: userInfo2 ? userInfo2.name + " " + userInfo2.lastName : "",
           style: { color: "black", fontWeight: "bold", fontSize: 18 }
         }}
         containerStyle={{

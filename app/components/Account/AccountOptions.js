@@ -47,7 +47,7 @@ export default function AccountOptions(props) {
       }
     },
     {
-      title: "Acerca de nosotros",
+      title: "Acerca de la App",
       iconType: "material-community",
       iconNameLeft: "information-outline",
       iconColorLeft: "#f0615a", // "#190976",
