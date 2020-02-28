@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, TouchableOpacity, Alert } from "react-native";
-import { Input, Icon, Button } from "react-native-elements";
-import * as firebase from "firebase";
+import { Input, Icon, Button, CheckBox } from "react-native-elements";
+
+import { firebaseApp } from "../../utils/Firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
 
 import Loading from "../../components/Loading";
+
+const db = firebase.firestore(firebaseApp);
 
 export default function RegisterForm(props) {
   const { navigation } = props;
@@ -25,6 +30,11 @@ export default function RegisterForm(props) {
   const inputRePassword = React.createRef();
 
   const [isVisibleLoading, setIsVisibleLoading] = useState(false);
+
+  const [major, setMajor] = useState(false);
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("+51");
 
   useEffect(() => {
     if (errorEmail !== "") {
@@ -52,9 +62,22 @@ export default function RegisterForm(props) {
       await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          console.log("entre al hackeo");
-          navigation.navigate("MyAccount");
+        .then(async () => {
+          await db
+            .collection("users")
+            .doc(firebase.auth().currentUser.uid)
+            .set({
+              name: name,
+              lastName: lastName,
+              birthdate: firebase.firestore.Timestamp.fromDate(
+                new Date("December 10, 1815")
+              ),
+              favoritePlaces: [],
+              gender: "",
+              createAt: new Date()
+            })
+            .then(() => navigation.navigate("MyAccount"))
+            .catch(() => console.log("ERROR"));
         })
         .catch((error) => {
           switch (error.code) {
@@ -81,6 +104,40 @@ export default function RegisterForm(props) {
   };
   return (
     <View style={styles.formContainer}>
+      <Input
+        placeholder="Nombres completos"
+        placeholderTextColor="#190976"
+        containerStyle={styles.inputForm}
+        inputContainerStyle={styles.inputContainer}
+        selectionColor="#190976"
+        onChange={(e) => setName(e.nativeEvent.text)}
+        leftplaceholderTextColor="#190976"
+        leftIconContainerStyle={styles.leftIconContainer}
+        leftIcon={
+          <Icon
+            type="material-community"
+            name="account-circle"
+            iconStyle={styles.iconRight}
+          />
+        }
+      />
+      <Input
+        placeholder="Apellidos completos"
+        placeholderTextColor="#190976"
+        containerStyle={styles.inputForm}
+        inputContainerStyle={styles.inputContainer}
+        selectionColor="#190976"
+        onChange={(e) => setLastName(e.nativeEvent.text)}
+        leftplaceholderTextColor="#190976"
+        leftIconContainerStyle={styles.leftIconContainer}
+        leftIcon={
+          <Icon
+            type="material-community"
+            name="account-circle"
+            iconStyle={styles.iconRight}
+          />
+        }
+      />
       <Input
         ref={inputEmail}
         placeholder="Correo electronico"
@@ -159,10 +216,62 @@ export default function RegisterForm(props) {
           />
         }
       />
+      <View
+        style={{
+          marginTop: 10,
+          flexDirection: "row"
+        }}
+      >
+        <Input
+          defaultValue="+51"
+          maxLength={9}
+          keyboardType="number-pad"
+          placeholder="Celular"
+          placeholderTextColor="#190976"
+          containerStyle={{
+            width: 200,
+            paddingLeft: 15
+          }}
+          inputContainerStyle={styles.inputContainer}
+          selectionColor="#190976"
+          onChange={(e) => setPhone(e.nativeEvent.text)}
+          leftplaceholderTextColor="#190976"
+          leftIconContainerStyle={styles.leftIconContainer}
+          leftIcon={
+            <Icon
+              type="material-community"
+              name="phone"
+              iconStyle={styles.iconRight}
+            />
+          }
+        />
+        <CheckBox
+          title="Soy +18"
+          checked={major}
+          checkedColor="#f0615a"
+          containerStyle={{
+            borderWidth: 0,
+            backgroundColor: "#fff",
+            marginLeft: 0
+          }}
+          onPress={() => setMajor(!major)}
+        />
+      </View>
+
       <Button
         title="Crear Cuenta"
         containerStyle={styles.btnContainerRegister}
-        disabled={email && password && rePassword ? false : true}
+        disabled={
+          email &&
+          password &&
+          rePassword &&
+          name &&
+          lastName &&
+          phone &&
+          major === true
+            ? false
+            : true
+        }
         buttonStyle={styles.btnRegister}
         onPress={handleRegister}
       />

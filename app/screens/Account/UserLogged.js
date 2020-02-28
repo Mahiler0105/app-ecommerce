@@ -1,13 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { Header, Avatar, Button } from "react-native-elements";
-import * as firebase from "firebase";
+
 import AccountOptions from "../../components/Account/AccountOptions";
+
+import { firebaseApp } from "../../utils/Firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
+
+const db = firebase.firestore(firebaseApp);
 
 export default function UserLogged(props) {
   const [userInfo, setUserInfo] = useState({});
+  const [userInfo2, setUserInfo2] = useState({});
   const { email } = userInfo;
   const { navigation } = props;
+
+  console.log(userInfo2);
+
+  useEffect(() => {
+    db.collection("users")
+      .doc(firebase.auth().currentUser.uid)
+      .get()
+      .then((doc) => {
+        console.log("jjajajaj");
+        setUserInfo2(doc.data());
+      });
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -29,7 +48,7 @@ export default function UserLogged(props) {
           />
         }
         centerComponent={{
-          text: email,
+          text: userInfo2 && userInfo2.name + " " + userInfo2.lastName,
           style: { color: "black", fontWeight: "bold", fontSize: 18 }
         }}
         containerStyle={{

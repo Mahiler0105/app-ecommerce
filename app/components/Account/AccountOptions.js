@@ -45,6 +45,17 @@ export default function AccountOptions(props) {
       onPress: () => {
         navigation.navigate("AccountConfig");
       }
+    },
+    {
+      title: "Acerca de nosotros",
+      iconType: "material-community",
+      iconNameLeft: "information-outline",
+      iconColorLeft: "#f0615a", // "#190976",
+      iconNameRight: "chevron-right",
+      iconColorRight: "#ccc",
+      onPress: () => {
+        navigation.navigate("AccountConfig");
+      }
     }
   ];
 
