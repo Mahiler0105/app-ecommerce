@@ -54,7 +54,7 @@ export default function AccountOptions(props) {
       iconNameRight: "chevron-right",
       iconColorRight: "#ccc",
       onPress: () => {
-        navigation.navigate("AccountConfig");
+        navigation.navigate("AppInfo");
       }
     }
   ];
