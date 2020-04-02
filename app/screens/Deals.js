@@ -1,10 +1,13 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, FlatList } from "react-native";
+import * as firebase from "firebase";
+
+import Card from "../components/Card";
 
 export default Deals = () => {
   return (
     <View>
-      <Text>Estoy en la pantalla de ofertas</Text>
+      <Card></Card>
     </View>
   );
 };
