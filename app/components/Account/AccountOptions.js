@@ -3,9 +3,10 @@ import { StyleSheet, View, Text } from "react-native";
 import { ListItem } from "react-native-elements";
 
 export default function AccountOptions(props) {
-  const { userInfo, navigation } = props;
-  const { displayName, email, phoneNumber } = userInfo;
-  console.log("JJAJAJAJA", navigation);
+  // const { userInfo, navigation } = props;
+  const { navigation } = props;
+  // const { displayName, email, phoneNumber } = userInfo;
+  // console.log("nuevo pe", userInfo);
 
   const menuOptions = [
     {

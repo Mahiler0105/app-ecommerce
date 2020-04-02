@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { Header, Avatar, Button } from "react-native-elements";
 
 import AccountOptions from "../../components/Account/AccountOptions";
@@ -11,56 +11,48 @@ import "firebase/firestore";
 const db = firebase.firestore(firebaseApp);
 
 export default function UserLogged(props) {
-  const [userInfo, setUserInfo] = useState({});
+  // const [userInfo, setUserInfo] = useState({});
   const [userInfo2, setUserInfo2] = useState({});
-  const { email } = userInfo;
   const { navigation } = props;
-
-  console.log(userInfo2);
 
   useEffect(() => {
     db.collection("users")
       .doc(firebase.auth().currentUser.uid)
       .get()
       .then((doc) => {
-        console.log("jjajajaj");
+        // console.log("jjajajaj");
         setUserInfo2(doc.data());
       });
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      const user = await firebase.auth().currentUser;
-      setUserInfo(user.providerData[0]);
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     const user = firebase.auth().currentUser;
+  //     console.log("NUEVO PE " + firebase.auth().currentUser.uid);
+  //     setUserInfo(user);
+  //   })();
+  // }, []);
   return (
     <View style={{ backgroundColor: "#fff", flex: 1 }}>
-      <Header
-        placement="left"
-        leftComponent={
-          <Avatar
-            rounded
-            icon={{ name: "user", type: "font-awesome" }}
-            onPress={() => console.log("Works!")}
-            activeOpacity={0.7}
-            // containerStyle={{ flex: 2, marginLeft: 20, marginTop: 115 }}
-          />
-        }
-        centerComponent={{
-          text: userInfo2 ? userInfo2.name + " " + userInfo2.lastName : "",
-          style: { color: "black", fontWeight: "bold", fontSize: 18 }
-        }}
-        containerStyle={{
-          backgroundColor: "#fff",
-          shadowOffset: { width: 0, height: 2 },
-          shadowColor: "red",
-          // shadowOpacity: 0.75, IOS
-          elevation: 5 // ANDROID
-        }}
-      />
+      <View style={styles.header2}>
+        <Avatar
+          size="large"
+          rounded
+          icon={{ name: "user", type: "font-awesome" }}
+          onPress={() => console.log("Works!")}
+          activeOpacity={0.7}
+        />
+        <Text style={{ textAlign: "center", fontSize: 20, marginTop: 10 }}>
+          {userInfo2 !== undefined
+            ? userInfo2.name + " " + userInfo2.lastName
+            : "..."}
+        </Text>
+        <Text style={{ textAlign: "center", fontSize: 15, marginTop: 10 }}>
+          {firebase.auth().currentUser.email}
+        </Text>
+      </View>
       <View style={styles.container}>
-        <AccountOptions userInfo={userInfo} navigation={navigation} />
+        <AccountOptions navigation={navigation} />
         <Button
           title="Cerrar Sesión"
           onPress={() => firebase.auth().signOut()}
@@ -80,6 +72,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#190976"
   },
   containerBtnSO: {
-    marginTop: 30
+    marginTop: 40
+  },
+  header2: {
+    paddingTop: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 180
   }
 });

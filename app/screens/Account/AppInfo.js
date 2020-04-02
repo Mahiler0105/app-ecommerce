@@ -22,9 +22,9 @@ export default function AppInfo() {
         <Text>Desarrollado por:{"\n"}</Text>
         <Text style={{ fontWeight: "bold", textAlign: "center" }}>
           Fernando Mahiler Chullo Mamani{"\n"}
-          Benajamin Andre Valdivia Navarrete {"\n"}
-          Gianella Naomi Alvarez Tinajeros{"\n"}
-          Gabriel Jesus Catacora Llerena{"\n"}
+          Benjamin Andre Valdivia Navarrete {"\n"}
+          Gianella Nahomi Alvarez Tinajeros{"\n"}
+          Gabriel Alejandro Catacora Llerena{"\n"}
         </Text>
         <Text> Arequipa - Perú </Text>
         <Text> 2020</Text>
